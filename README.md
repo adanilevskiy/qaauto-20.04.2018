@@ -1,4 +1,4 @@
-# QAauto - 20.04.2018 Project
+# Environment configuration
 #### Install environment to be able to execute tests and build report:  
 #### This project is Java based project that use maven build tool.
 #### So first of all we need to install java. Java version 7 will be enough.

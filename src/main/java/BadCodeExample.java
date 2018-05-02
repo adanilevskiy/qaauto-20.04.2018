@@ -25,7 +25,7 @@ public static void main(String args[]) throws InterruptedException {
     for(WebElement searchResult : searchResults){
         String searchResultText = searchResult.getText();
         if(searchResultText.contains(searchTerm)) {
-            System.out.println("Search term "+ searchTerm +" found in result");
+            System.out.println("Search term '"+ searchTerm +"' found in result");
             System.out.println("--------------------------------------------");
         }
     }
