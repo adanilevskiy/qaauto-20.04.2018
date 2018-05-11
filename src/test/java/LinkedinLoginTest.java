@@ -26,8 +26,6 @@ public class LinkedinLoginTest {
     }
 
 
-
-
     @Test
     public void getLocalTime() throws InterruptedException {
         // Create object of SimpleDateFormat class and decide the format
@@ -42,7 +40,7 @@ public class LinkedinLoginTest {
      * - Successful Login Test Valid user email(lowerCase) + Valid Password
      * - Successful Login Test Valid user email(camelCase) + Valid Password
      * - Space in password
-     *
+     * <p>
      * Negative Cases:
      * - Empty email field
      * - Empty pass field
@@ -53,20 +51,17 @@ public class LinkedinLoginTest {
      */
 
     @Test
-    public void successfulLoginTest() throws InterruptedException {
+    public void successfulLoginTest(){
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
+        Assert.assertEquals(linkedinLoginPage.getCurrentPageTitle(), "LinkedIn: Log In or Sign Up",
+                "Login Page title is wrong");
 
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
+        linkedinLoginPage.login("toshnot.1@gmail.com", "Test123");
+        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
+        Assert.assertTrue(linkedinHomePage.isFrofileMenuDisplayed(), "Profile menu is not displayed after login");
 
-        userEmailField.sendKeys("toshnot.1@gmail.com");
-        userPasswordField.sendKeys("Test123");
-        signInButton.click();
-        sleep(3000);
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn", "User is not logged in");
+        Assert.assertEquals(linkedinLoginPage.getCurrentPageTitle(), "LinkedIn", "User is not logged in");
     }
 
     @Test
@@ -89,6 +84,8 @@ public class LinkedinLoginTest {
     @Test
     public void spaceInPasswordFieldTest() throws InterruptedException {
 
+
+
         Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
 
         WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
@@ -104,20 +101,14 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void verifyLoginWithEmptyUsernameField() throws InterruptedException {
+    public void verifyLoginWithEmptyUserNameField(){
 
         WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
         Assert.assertTrue(signInButton.isDisplayed(), "Sign In button is missing");
 
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        userEmailField.sendKeys("");
-
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        userPasswordField.sendKeys("Test123");
-        signInButton.click();
-        sleep(3000);
-
-        Assert.assertFalse(signInButton.isDisplayed(), "Sign In button is missing");
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        linkedinLoginPage.login("", "Test123");
+        Assert.assertTrue(linkedinLoginPage.isSignInButtomDisplayed(), "Sign In button is missing");
     }
 
     @Test
@@ -152,12 +143,12 @@ public class LinkedinLoginTest {
         sleep(3000);
 
 
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn" , "User is not redirected to Login page");
+        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
         Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
-                "There were one or more errors in your submission. Please correct the marked fields below." ,
+                "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
         Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_key-login-error']")).getText(),
-                "Hmm, we don't recognize that email. Please try again." ,
+                "Hmm, we don't recognize that email. Please try again.",
                 "The error message is not displayed");
     }
 
@@ -176,12 +167,12 @@ public class LinkedinLoginTest {
         sleep(3000);
 
 
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn" , "User is not redirected to Login page");
+        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
         Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
-                "There were one or more errors in your submission. Please correct the marked fields below." ,
+                "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
         Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_password-login-error']")).getText(),
-                "Hmm, we don't recognize that email. Please try again." ,
+                "Hmm, we don't recognize that email. Please try again.",
                 "The error message is not displayed");
     }
 
@@ -200,14 +191,15 @@ public class LinkedinLoginTest {
         sleep(3000);
 
 
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn" , "User is not redirected to Login page");
+        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
         Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
-                "There were one or more errors in your submission. Please correct the marked fields below." ,
+                "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
         Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_key-login-error']")).getText(),
-                "Please enter a valid email address." ,
+                "Please enter a valid email address.",
                 "The error message is not displayed");
     }
+
     @Test
     public void verifyLoginWithTooShortPassword() throws InterruptedException {
 
@@ -223,12 +215,12 @@ public class LinkedinLoginTest {
         sleep(3000);
 
 
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn" , "User is not redirected to Login page");
+        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
         Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
-                "There were one or more errors in your submission. Please correct the marked fields below." ,
+                "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
         Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_password-login-error']")).getText(),
-                "The password you provided must have at least 6 characters." ,
+                "The password you provided must have at least 6 characters.",
                 "The error message is not displayed");
     }
 }
