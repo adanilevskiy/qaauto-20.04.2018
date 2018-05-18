@@ -12,7 +12,17 @@ import java.util.Date;
 import static java.lang.Thread.sleep;
 
 public class LinkedinLoginTest {
-    WebDriver webDriver;
+   WebDriver webDriver;
+    String validUserEmail = "toshnot.1@gmail.com";
+    String validCamelCaseUserEmail = "tOsHnOt.1@gmail.com";
+    String validUserPassword = "Test123";
+    String incorrectUserEmail = "toshnot.1gmail.com";
+    String wrongUserEmail = "XXXtoshnot.1@gmail.com";
+    String wrongUserPass = "Test123!!";
+    String emptyUserEmail = "";
+    String emptyUserPassword = "";
+    String tooShortPassword = "T";
+    String validPasswordWithSpase = "Test 123";
 
     @BeforeMethod
     public void before() {
@@ -23,16 +33,6 @@ public class LinkedinLoginTest {
     @AfterMethod
     public void after() {
         webDriver.close();
-    }
-
-
-    @Test
-    public void getLocalTime() throws InterruptedException {
-        // Create object of SimpleDateFormat class and decide the format
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss ");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date));
-
     }
 
     /**
@@ -50,176 +50,148 @@ public class LinkedinLoginTest {
      * - Verify Login With Too Short Password
      */
 
-    @Test
-    public void successfulLoginTest(){
+    @DataProvider
+    public Object[][] ValidUserDataProvider() {
+        return new Object[][]{
+                {"toshnot.1@gmail.com","Test123"},
+                {"tOsHnOt.1@gmail.com","Test123"},
+        };
+    }
+    @Test(dataProvider = "ValidUserDataProvider")
+    public void successfulLoginTest(String validUserEmail, String validUserPassword) throws InterruptedException {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
-        Assert.assertEquals(linkedinLoginPage.getCurrentPageTitle(), "LinkedIn: Log In or Sign Up",
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
                 "Login Page title is wrong");
 
-        linkedinLoginPage.login("toshnot.1@gmail.com", "Test123");
+        linkedinLoginPage.login(validUserEmail, validUserPassword);
+        sleep(5000);
         LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
-        Assert.assertTrue(linkedinHomePage.isFrofileMenuDisplayed(), "Profile menu is not displayed after login");
 
-        Assert.assertEquals(linkedinLoginPage.getCurrentPageTitle(), "LinkedIn", "User is not logged in");
+        Assert.assertTrue(linkedinHomePage.isProfileMenuDisplayed(),
+                "Profile menu is not displayed after login");
+        Assert.assertEquals(linkedinHomePage.getHomePageTitle(),
+                "LinkedIn",
+                "User is not logged in");
     }
 
-    @Test
-    public void successfulLoginWithCamelCaseEmailTest() throws InterruptedException {
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
-
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("ToShnOt.1@gmail.com");
-        userPasswordField.sendKeys("Test123");
-        signInButton.click();
-        sleep(3000);
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn", "User is not logged in");
-    }
-
-    @Test
+    @Test (enabled = false)
     public void spaceInPasswordFieldTest() throws InterruptedException {
-
-
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
-
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("toshnot.1@gmail.com");
-        userPasswordField.sendKeys("Test 123");
-        signInButton.click();
-        sleep(3000);
-
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn", "User is not logged in");
-    }
-
-    @Test
-    public void verifyLoginWithEmptyUserNameField(){
-
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-        Assert.assertTrue(signInButton.isDisplayed(), "Sign In button is missing");
-
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-        linkedinLoginPage.login("", "Test123");
-        Assert.assertTrue(linkedinLoginPage.isSignInButtomDisplayed(), "Sign In button is missing");
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Login Page title is wrong");
+
+        linkedinLoginPage.login(validUserEmail, validPasswordWithSpase);
+        sleep(5000);
+        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
+        Assert.assertEquals(linkedinHomePage.getHomePageTitle(),
+                "LinkedIn",
+                "User is not logged in");
     }
 
-    @Test
-    public void verifyLoginWithEmptyPasswordField() throws InterruptedException {
-
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-        Assert.assertTrue(signInButton.isDisplayed(), "Sign In button is missing");
-
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        userEmailField.sendKeys("toshnot.1@gmail.com");
-
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        userPasswordField.sendKeys("");
-        signInButton.click();
-        sleep(3000);
-
-        Assert.assertFalse(signInButton.isDisplayed(), "Sign In button is missing");
+    @DataProvider
+    public Object[][] EmptyLoginOrPasswordFieldProvider() {
+        return new Object[][]{
+                {"","Test123"},
+                {"toshnot.1@gmail.com",""}
+        };
+    }
+    @Test (dataProvider = "EmptyLoginOrPasswordFieldProvider")
+    public void verifyLoginWithEmptyUserNameField(String userName, String userPassword) throws InterruptedException {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Login Page title is wrong");
+        linkedinLoginPage.login(userName, userPassword);
+        sleep(5000);
+        Assert.assertTrue(linkedinLoginPage.isSignInButtonDisplayed(),
+                "Sign In button is missing");
     }
 
     @Test
     public void verifyLoginWithWrongEmail() throws InterruptedException {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Login Page title is wrong");
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
+        linkedinLoginPage.login(wrongUserEmail, validUserPassword);
+        sleep(5000);
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
 
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("X123toshnot.1@gmail.com");
-        userPasswordField.sendKeys("Test123");
-        signInButton.click();
-        sleep(3000);
-
-
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
+        Assert.assertEquals(loginSubmitPage.getLoginSubmitPageTitle(),
+                "Sign In to LinkedIn",
+                "User is not redirected to Login-Submit page");
+        Assert.assertEquals(loginSubmitPage.getGlobalErrorMessageText(),
                 "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_key-login-error']")).getText(),
+        Assert.assertEquals(loginSubmitPage.getWrongEmailErrorMessageText(),
                 "Hmm, we don't recognize that email. Please try again.",
                 "The error message is not displayed");
     }
 
     @Test
     public void verifyLoginWithWrongPassword() throws InterruptedException {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Page title is wrong");
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
+        linkedinLoginPage.login(validUserEmail, wrongUserPass);
+        sleep(5000);
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
 
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("toshnot.1@gmail.com");
-        userPasswordField.sendKeys("Test1234");
-        signInButton.click();
-        sleep(3000);
-
-
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
+        Assert.assertEquals(loginSubmitPage.getLoginSubmitPageTitle(),
+                "Sign In to LinkedIn",
+                "User is not redirected to Login page");
+        Assert.assertEquals(loginSubmitPage.getGlobalErrorMessageText(),
                 "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_password-login-error']")).getText(),
-                "Hmm, we don't recognize that email. Please try again.",
+        Assert.assertEquals(loginSubmitPage.getWrongPasswordErrorMessageText(),
+                "Hmm, that's not the right password. Please try again or request a new one.",
                 "The error message is not displayed");
     }
 
     @Test
     public void verifyLoginWithIncorrectEmail() throws InterruptedException {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Page title is wrong");
+        linkedinLoginPage.login(incorrectUserEmail, validUserPassword);
+        sleep(5000);
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
-
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("toshnot.1gmail.com");
-        userPasswordField.sendKeys("Test123");
-        signInButton.click();
-        sleep(3000);
-
-
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
+        Assert.assertEquals(loginSubmitPage.getLoginSubmitPageTitle(),
+                "Sign In to LinkedIn",
+                "User is not redirected to Login page");
+        Assert.assertEquals(loginSubmitPage.getGlobalErrorMessageText(),
                 "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_key-login-error']")).getText(),
+        Assert.assertEquals(loginSubmitPage.getIncorrectEmailErrorMessageText(),
                 "Please enter a valid email address.",
                 "The error message is not displayed");
     }
 
     @Test
     public void verifyLoginWithTooShortPassword() throws InterruptedException {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        Assert.assertEquals(linkedinLoginPage.getLoginPageTitle(),
+                "LinkedIn: Log In or Sign Up",
+                "Page title is wrong");
+        linkedinLoginPage.login(validUserEmail, tooShortPassword);
 
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Page title is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
+        sleep(5000);
+        Assert.assertEquals(loginSubmitPage.getLoginSubmitPageTitle(),
+                "Sign In to LinkedIn", "User is not redirected to Login page");
 
-        WebElement userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        userEmailField.sendKeys("toshnot.1@gmail.com");
-        userPasswordField.sendKeys("T");
-        signInButton.click();
-        sleep(3000);
-
-
-        Assert.assertEquals(webDriver.getTitle(), "Sign In to LinkedIn", "User is not redirected to Login page");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//div[@class='alert error']//strong")).getText(),
+        Assert.assertEquals(loginSubmitPage.getGlobalErrorMessageText(),
                 "There were one or more errors in your submission. Please correct the marked fields below.",
                 "The error message is not displayed");
-        Assert.assertEquals(webDriver.findElement(By.xpath("//ul[@class='form-fields']//span[@id='session_password-login-error']")).getText(),
+        Assert.assertEquals(loginSubmitPage.getToShortPassErrorMessageText(),
                 "The password you provided must have at least 6 characters.",
                 "The error message is not displayed");
     }

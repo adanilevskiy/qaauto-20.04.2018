@@ -8,8 +8,11 @@ public class LinkedinLoginPage {
     private WebElement userPasswordField;
     private WebElement signInButton;
 
+
+
     public LinkedinLoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
+        initElements();
     }
 
     private void initElements(){
@@ -19,17 +22,16 @@ public class LinkedinLoginPage {
     }
 
     public void login(String userEmail, String userPassword){
-        initElements();
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
 
     }
 
-    public boolean isSignInButtomDisplayed(){
+    public boolean isSignInButtonDisplayed(){
         return signInButton.isDisplayed();
     }
-    public String getCurrentPageTitle(){
+    public String getLoginPageTitle(){
         return webDriver.getTitle();
     }
 

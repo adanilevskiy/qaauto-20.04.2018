@@ -16,10 +16,11 @@ public class LinkedinHomePage {
         profileMenu = webDriver.findElement(By.xpath("//li[@id='profile-nav-item']"));
     }
 
-    public String getCurrentPageTitle() {
-        return webDriver.getTitle();
-    }
-    public boolean isFrofileMenuDisplayed(){
+    public boolean isProfileMenuDisplayed(){
         return profileMenu.isDisplayed();
+    }
+
+    public String getHomePageTitle(){
+        return webDriver.getTitle();
     }
 }
