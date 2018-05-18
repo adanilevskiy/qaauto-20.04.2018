@@ -2,8 +2,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LoginSubmitPage {
-    private WebDriver webDriver;
+public class LoginSubmitPage extends LinkedinBasePage{
+
     private WebElement globalErrorMessage;
     private WebElement toShortPassErrorMessage;
     private WebElement wrongPasswordErrorMessage;
@@ -11,8 +11,13 @@ public class LoginSubmitPage {
     private WebElement incorrectEmailErrorMessage;
 
     public LoginSubmitPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
+        super(webDriver);
         initElements();
+    }
+
+    @Override
+    boolean isPageLoaded() {
+        return globalErrorMessage.isDisplayed();
     }
 
     private void initElements() {
@@ -37,8 +42,5 @@ public class LoginSubmitPage {
     }
     public String getIncorrectEmailErrorMessageText(){
         return   incorrectEmailErrorMessage.getText();
-    }
-    public String getLoginSubmitPageTitle(){
-        return webDriver.getTitle();
     }
 }

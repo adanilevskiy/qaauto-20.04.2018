@@ -2,25 +2,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LinkedinHomePage {
+public class LinkedinHomePage extends LinkedinBasePage{
 
-    private WebDriver webDriver;
     private WebElement profileMenu;
 
     public LinkedinHomePage(WebDriver webDriver){
-        this.webDriver = webDriver;
+        super(webDriver);
         initElements();
+    }
+
+    @Override
+    boolean isPageLoaded() {
+        return profileMenu.isDisplayed();
     }
 
     private void initElements(){
         profileMenu = webDriver.findElement(By.xpath("//li[@id='profile-nav-item']"));
-    }
-
-    public boolean isProfileMenuDisplayed(){
-        return profileMenu.isDisplayed();
-    }
-
-    public String getHomePageTitle(){
-        return webDriver.getTitle();
     }
 }
