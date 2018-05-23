@@ -5,6 +5,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static java.lang.Thread.sleep;
 
 public class LinkedinSearchTest {
@@ -21,6 +23,7 @@ public class LinkedinSearchTest {
     }
     @Test
     public void basicSearchTest() throws InterruptedException {
+        String searhTerm = "HR";
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(),
                 "Login Page is not loaded");
@@ -35,14 +38,18 @@ public class LinkedinSearchTest {
 
         linkedinHomePage.search("HR");
 
-        sleep(3000);
+        sleep(10000);
 
-        LinkedinSearchResultPage linkedinSearchResultPage = new LinkedinSearchResultPage(webDriver);
-        Assert.assertTrue(linkedinSearchResultPage.isPageLoaded(), "Search Results Page is not loaded");
+        LinkedinSearchPage linkedinSearchPage = new LinkedinSearchPage(webDriver);
+        Assert.assertTrue(linkedinSearchPage.isPageLoaded(), "Search Results Page is not loaded");
 
-        Assert.assertEquals(linkedinSearchResultPage.getCountOfSearchResultsOnPage(),
-                10, "Number of search results on page is not 10");
+        Assert.assertEquals(linkedinSearchPage.getResultsCount(),
+                10, "Search results count is not 10");
 
-        linkedinSearchResultPage.verifyEachSearchResultContainsSearchTerm("HR");
+        List<String> resultsList = linkedinSearchPage.getResultList();
+        for (String result:resultsList){
+            Assert.assertTrue(result.contains(searhTerm),
+                    "SearchTerm "+searhTerm+ " is missing in following result:\n"+result );
+        }
     }
 }
