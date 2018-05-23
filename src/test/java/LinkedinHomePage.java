@@ -8,7 +8,6 @@ public class LinkedinHomePage extends LinkedinBasePage{
     private WebElement searchField;
     private WebElement searchButton;
 
-
     public LinkedinHomePage(WebDriver webDriver){
         super(webDriver);
         initElements();
