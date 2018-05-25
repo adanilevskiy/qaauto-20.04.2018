@@ -1,24 +1,12 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+package test;
+
 import org.testng.Assert;
 import org.testng.annotations.*;
-
+import page.*;
 
 import static java.lang.Thread.sleep;
 
-public class LinkedinLoginTest {
-    WebDriver webDriver;
-
-    @BeforeMethod
-    public void before() {
-        webDriver = new FirefoxDriver();
-        webDriver.get("https://www.linkedin.com");
-    }
-
-    @AfterMethod
-    public void after() {
-        webDriver.close();
-    }
+public class LinkedinLoginTest extends LinkedinBaseTest {
 
     /**
      * Positive cases:
@@ -38,19 +26,17 @@ public class LinkedinLoginTest {
     @DataProvider
     public Object[][] ValidUserDataProvider() {
         return new Object[][]{
-                {"toshnot.1@gmail.com","Test123"},
-                {"tOsHnOt.1@gmail.com","Test123"},
+                {"smithbod58@gmail.com","Test123Test123"},
+          //      {"sMiThBod58@gmail.com","Test123Test123"},
         };
     }
     @Test(dataProvider = "ValidUserDataProvider")
     public void successfulLoginTest(String validUserEmail, String validUserPassword) throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(),
                 "Login Page is not loaded");
 
-        linkedinLoginPage.login(validUserEmail, validUserPassword);
-        sleep(5000);
-        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
+        LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(validUserEmail, validUserPassword);
         Assert.assertTrue(linkedinHomePage.isPageLoaded(),
                 "Home Page is not loaded");
 
@@ -58,13 +44,12 @@ public class LinkedinLoginTest {
     @DataProvider
     public Object[][] incorrectPasswordValues() {
         return new Object[][]{
-                {"toshnot.1@gmail.com","Test 123"},
-                {"toshnot.1@gmail.com","Test1234"}
+                {"smithbod58@gmail.com","Test 1234!"},
+                {"smithbod58@gmail.com","Test12345!"}
         };
     }
     @Test (dataProvider = "incorrectPasswordValues")
     public void loginWithInvalidPasswordTest(String validUserEmail, String invalidUserPassword) throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Login Page title is wrong");
@@ -88,12 +73,11 @@ public class LinkedinLoginTest {
     public Object[][] emptyLoginOrPasswordFieldProvider() {
         return new Object[][]{
                 {"","Test123"},
-                {"toshnot.1@gmail.com",""}
+                {"smithbod58@gmail.com",""}
         };
     }
     @Test (dataProvider = "emptyLoginOrPasswordFieldProvider")
     public void verifyLoginWithEmptyUserNameOrUserPassField(String userName, String userPassword) throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Login Page title is wrong");
@@ -105,12 +89,11 @@ public class LinkedinLoginTest {
 
     @Test
     public void verifyLoginWithWrongEmail() throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Login Page title is wrong");
 
-        linkedinLoginPage.login("XXXtoshnot.1@gmail.com", "Test123");
+        linkedinLoginPage.login("XXXsmithbod58@gmail.com", "Test1234!");
         sleep(5000);
         LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
 
@@ -127,11 +110,10 @@ public class LinkedinLoginTest {
 
     @Test
     public void verifyLoginWithIncorrectEmail() throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Page title is wrong");
-        linkedinLoginPage.login("toshnot.1gmail.com", "Test123");
+        linkedinLoginPage.login("smithbod58gmail.com", "Test1234!");
         sleep(5000);
         LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
 
@@ -148,11 +130,10 @@ public class LinkedinLoginTest {
 
     @Test
     public void verifyLoginWithTooShortPassword() throws InterruptedException {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Page title is wrong");
-        linkedinLoginPage.login("toshnot.1@gmail.com", "T");
+        linkedinLoginPage.login("smithbod58@gmail.com", "T");
 
         LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
         sleep(5000);
@@ -168,15 +149,16 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void LinledinSuccessfulRessetPasswordTest(){
-        String userEmail = "toshnot.1@gmail.com";
+    public void LinkedinSuccessfulResetPasswordTest() throws InterruptedException {
+        String userEmail = "smithbod58@gmail.com";
         String UserPassword = "Test123Test123";
 
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         Assert.assertEquals(linkedinLoginPage.getCurrentTitle(),
                 "LinkedIn: Log In or Sign Up",
                 "Page title is wrong");
         linkedinLoginPage.clickOnForgotPasswordLink();
+
+        sleep(3000);
 
         LinkedinResetPasswordPage linkedinResetPasswordPage = new LinkedinResetPasswordPage(webDriver);
 
@@ -192,17 +174,21 @@ public class LinkedinLoginTest {
 
         linkedinResetPasswordPage.submitUserEmail(userEmail);
 
+        sleep(3000);
+
         LinkedinResetPasswordSubmitPage linkedinResetPasswordSubmitPage = new LinkedinResetPasswordSubmitPage(webDriver);
 
         Assert.assertTrue(linkedinResetPasswordSubmitPage.isPageLoaded(),"Reset Password Submit Page is not loaded");
         Assert.assertEquals(linkedinResetPasswordSubmitPage.getCurrentTitle(),
-                "Please check your mail for reset password link.  | LinkedIn",
+                "Please check your mail for reset password link. | LinkedIn",
                 "Page title is wrong");
 
-        Assert.assertEquals(linkedinResetPasswordPage.getInstructionsMessage(),
+        Assert.assertEquals(linkedinResetPasswordSubmitPage.getInstructionsMessage(),
                 "Please check your email and click the secure link.", "Wrong instructions message is displayed");
         linkedinResetPasswordSubmitPage.getLinkedinResetPasswordLink();
         linkedinResetPasswordSubmitPage.navigateToResetPasswordLink();
+
+        sleep(3000);
 
         LinkedinSetNewPasswordPage linkedinSetNewPasswordPage = new LinkedinSetNewPasswordPage(webDriver);
         Assert.assertTrue(linkedinSetNewPasswordPage.isPageLoaded(),"Set new Password Page is not loaded");
@@ -220,6 +206,8 @@ public class LinkedinLoginTest {
 
         linkedinSetNewPasswordPage.setNewPassword(UserPassword);
 
+        sleep(3000);
+
         ConfirmResetPasswordPage confirmResetPasswordPage = new ConfirmResetPasswordPage(webDriver);
         Assert.assertTrue(confirmResetPasswordPage.isPageLoaded(),"Confirm reset password Page is not loaded");
         Assert.assertEquals(confirmResetPasswordPage.getCurrentTitle(),
@@ -232,6 +220,8 @@ public class LinkedinLoginTest {
         Assert.assertTrue(confirmResetPasswordPage.isGoToHomepageButtonDisplayed(),"'Go to Homepage' button is missing");
 
         confirmResetPasswordPage.clickOnGoToHomepageButton();
+
+        sleep(3000);
 
         LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
         Assert.assertTrue(linkedinHomePage.isPageLoaded(),"Homepage is not loaded");

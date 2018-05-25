@@ -1,3 +1,5 @@
+package page;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +23,7 @@ public class LinkedinSearchPage extends LinkedinBasePage{
         searchResults = webDriver.findElements(By.xpath("//li[contains(@class,'search-result search-result__occluded-item')]"));
     }
     @Override
-    boolean isPageLoaded() {
+    public boolean isPageLoaded() {
         return searchResultsContainer.isDisplayed();
     }
 

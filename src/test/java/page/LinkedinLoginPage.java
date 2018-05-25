@@ -1,38 +1,45 @@
-import org.openqa.selenium.By;
+package page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LinkedinLoginPage extends LinkedinBasePage{
 
+    @FindBy(xpath = "//input[@id='login-email']")
     private WebElement userEmailField;
+
+    @FindBy(xpath = "//input[@id='login-password']")
     private WebElement userPasswordField;
+
+    @FindBy(xpath = "//input[@id='login-submit']")
     private WebElement signInButton;
+
+    @FindBy(xpath = "//a[@class='link-forgot-password']")
     private WebElement forgotPasswordLink;
+
 
     public LinkedinLoginPage(WebDriver webDriver) {
         super(webDriver);
-        initElements();
+        PageFactory.initElements(webDriver,this);
     }
 
     @Override
-    boolean isPageLoaded() {
+    public boolean isPageLoaded() {
         return signInButton.isDisplayed();
     }
 
-    private void initElements(){
-        userEmailField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
-        userPasswordField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        signInButton = webDriver.findElement(By.xpath("//input[@id='login-submit']"));
-        forgotPasswordLink = webDriver.findElement(By.xpath("//a[@class='link-forgot-password']"));
-    }
-
-    public void login(String userEmail, String userPassword) {
+    public LinkedinHomePage login(String userEmail, String userPassword) {
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
+        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
     }
+
+
     public void clickOnForgotPasswordLink(){
-        signInButton.click();
+        forgotPasswordLink.click();
     }
 
     public boolean isForgotPasswordLinkDisplayed(){

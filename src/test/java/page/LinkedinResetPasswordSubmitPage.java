@@ -1,3 +1,5 @@
+package page;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,7 +21,7 @@ public class LinkedinResetPasswordSubmitPage extends LinkedinBasePage{
     }
 
     @Override
-    boolean isPageLoaded() {
+    public boolean isPageLoaded() {
         return instructionsMessage.isDisplayed();
     }
     public boolean isTryDifferentEmailButtonDisplayed(){
