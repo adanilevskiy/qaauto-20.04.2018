@@ -1,6 +1,5 @@
 package page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,9 +25,11 @@ public class LinkedinHomePage extends LinkedinBasePage{
     public boolean isPageLoaded() {
         return profileMenu.isDisplayed();
     }
-    public void search(String searchTerm){
+
+    public LinkedinSearchPage search(String searchTerm){
         searchField.sendKeys(searchTerm);
         searchButton.click();
+        return PageFactory.initElements(webDriver, LinkedinSearchPage.class);
     }
     public boolean isSearchFieldDisplayed(){
         return searchField.isDisplayed();

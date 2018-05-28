@@ -3,14 +3,15 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
-public class ConfirmResetPasswordPage extends LinkedinBasePage{
+public class LinkedinConfirmResetPasswordPage extends LinkedinBasePage{
 
     private WebElement pageHeader;
     private WebElement goToHomepageButton;
 
 
-    public ConfirmResetPasswordPage(WebDriver webDriver) {
+    public LinkedinConfirmResetPasswordPage(WebDriver webDriver) {
         super(webDriver);
     }
     private void initElements(){
@@ -25,10 +26,12 @@ public class ConfirmResetPasswordPage extends LinkedinBasePage{
     public boolean isGoToHomepageButtonDisplayed(){
         return goToHomepageButton.isDisplayed();
     }
-    public void clickOnGoToHomepageButton(){
-        goToHomepageButton.click();
-    }
+
     public String getSuccssesfulResetPasswordMessageText(){
         return pageHeader.getText();
+    }
+    public LinkedinHomePage clickOnGoToHomepageButton(){
+        goToHomepageButton.click();
+        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
     }
 }

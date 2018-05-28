@@ -30,16 +30,29 @@ public class LinkedinLoginPage extends LinkedinBasePage{
         return signInButton.isDisplayed();
     }
 
-    public LinkedinHomePage login(String userEmail, String userPassword) {
+    public LinkedinHomePage loginWithValidUserData(String userEmail, String userPassword) {
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
         return PageFactory.initElements(webDriver, LinkedinHomePage.class);
     }
 
+    public LinkedinLoginSubmitPage loginWithInvalidUserData(String userEmail, String userPassword) {
+        userEmailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+        return PageFactory.initElements(webDriver, LinkedinLoginSubmitPage.class);
+    }
 
-    public void clickOnForgotPasswordLink(){
+    public void loginWithEmptyFields(String userEmail, String userPassword) {
+        userEmailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+    }
+
+    public LinkedinResetPasswordPage clickOnForgotPasswordLink(){
         forgotPasswordLink.click();
+        return PageFactory.initElements(webDriver, LinkedinResetPasswordPage.class);
     }
 
     public boolean isForgotPasswordLinkDisplayed(){

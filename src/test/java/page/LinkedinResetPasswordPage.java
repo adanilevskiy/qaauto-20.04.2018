@@ -1,30 +1,29 @@
 package page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LinkedinResetPasswordPage extends LinkedinBasePage{
 
+    @FindBy(xpath = "//input[@name='userName']")
     private WebElement emailTestField;
+
+    @FindBy(xpath = "//button[@id='reset-password-submit-button']")
     private WebElement submitButton;
+
+    @FindBy(xpath = "//h2[@class='form__subtitle']")
     private WebElement instructionsMessage;
 
 
     public LinkedinResetPasswordPage(WebDriver webDriver) {
         super(webDriver);
-        initElements();
     }
 
     @Override
     public boolean isPageLoaded() {
         return instructionsMessage.isDisplayed();
-    }
-
-    private void initElements(){
-        emailTestField = webDriver.findElement(By.xpath("//input[@name='userName']"));
-        submitButton = webDriver.findElement(By.xpath("//button[@id='reset-password-submit-button']"));
-        instructionsMessage = webDriver.findElement(By.xpath("//h2[@class='form__subtitle']"));
     }
 
     public boolean isEmailTextFieldDisplayed(){
@@ -35,9 +34,10 @@ public class LinkedinResetPasswordPage extends LinkedinBasePage{
         return submitButton.isDisplayed();
     }
 
-    public void submitUserEmail(String userEmail){
+    public LinkedinResetPasswordSubmitPage submitUserEmail(String userEmail){
         emailTestField.sendKeys(userEmail);
         submitButton.click();
+        return PageFactory.initElements(webDriver, LinkedinResetPasswordSubmitPage.class);
     }
 
     public String getInstructionsMessage(){
