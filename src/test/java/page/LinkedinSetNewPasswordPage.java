@@ -14,10 +14,7 @@ public class LinkedinSetNewPasswordPage extends LinkedinBasePage{
     @FindBy(xpath = "//input[@name='confirmPassword']")
     private WebElement confirmNewPasswordField;
 
-    @FindBy(xpath = "//input[@name='deleteAllSession']")
-    private WebElement requireAllDevicesCheckbox;
-
-    @FindBy(xpath = "reset-password-submit-button")
+    @FindBy(xpath = "//button[@id='reset-password-submit-button']")
     private WebElement submitButton;
 
     @FindBy(xpath = "//h2[@class='form__subtitle']")
@@ -27,28 +24,19 @@ public class LinkedinSetNewPasswordPage extends LinkedinBasePage{
         super(webDriver);
     }
 
+    /**
+     * Check if current page is loaded.
+     * @return true/false if loaded or not.
+     */
     @Override
     public boolean isPageLoaded() {
+        waitUntilElementIsClickable(instructionsMessage, 10);
         return instructionsMessage.isDisplayed();
-    }
-
-    public boolean isNewPasswordFielsDisplayed(){
-        return newPasswordField.isDisplayed();
-    }
-    public boolean isConfirmNewPasswordFieldDisplayed(){
-        return confirmNewPasswordField.isDisplayed();
-    }
-    public boolean requireAllDevicesCheckbox(){
-        return requireAllDevicesCheckbox.isDisplayed();
-    }
-    public boolean isSubmitButtonDisplayed(){
-        return submitButton.isDisplayed();
     }
 
     public LinkedinConfirmResetPasswordPage setNewPassword(String newPassword){
         newPasswordField.sendKeys(newPassword);
         confirmNewPasswordField.sendKeys(newPassword);
-        requireAllDevicesCheckbox.click();
         submitButton.click();
         return PageFactory.initElements(webDriver, LinkedinConfirmResetPasswordPage.class);
     }

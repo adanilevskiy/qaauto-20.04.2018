@@ -1,8 +1,5 @@
 package page;
 
-import Utils.GMailService;
-
-
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,8 +21,13 @@ public class LinkedinResetPasswordSubmitPage extends LinkedinBasePage{
         super(webDriver);
     }
 
+    /**
+     * Check if current page is loaded.
+     * @return true/false if loaded or not.
+     */
     @Override
     public boolean isPageLoaded() {
+        waitUntilElementIsClickable(instructionsMessage, 120);
         return instructionsMessage.isDisplayed();
     }
     public boolean isTryDifferentEmailButtonDisplayed(){
@@ -50,10 +52,10 @@ public class LinkedinResetPasswordSubmitPage extends LinkedinBasePage{
     public String getResetPasswordLinkFromEmail(String messageToPartial) {
         String messageSubjectPartial = "here's the link to reset your password";
         String messageFromPartial = "security-noreply@linkedin.com";
-        GMailService GMailService = new GMailService();
-        String message = GMailService.waitMessage(messageSubjectPartial, messageToPartial, messageFromPartial, 60);
-
-        String resetPasswordLink = StringUtils.substringBetween(message, "browser:", "This link").trim();
+        String message = gMailService.waitMessage(messageSubjectPartial, messageToPartial, messageFromPartial, 60);
+        String resetPasswordLink = StringUtils.substringBetween(message, "To change your LinkedIn password, click <a href=\"", "\" style")
+                .replaceAll("amp;", "");
+        System.out.println(resetPasswordLink);
         return resetPasswordLink;
     }
 }

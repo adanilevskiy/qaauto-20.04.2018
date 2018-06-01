@@ -6,7 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LinkedinResetPasswordPage extends LinkedinBasePage{
-
     @FindBy(xpath = "//input[@name='userName']")
     private WebElement emailTestField;
 
@@ -21,17 +20,14 @@ public class LinkedinResetPasswordPage extends LinkedinBasePage{
         super(webDriver);
     }
 
+    /**
+     * Check if current page is loaded.
+     * @return true/false if loaded or not.
+     */
     @Override
     public boolean isPageLoaded() {
+        waitUntilElementIsClickable(instructionsMessage,5);
         return instructionsMessage.isDisplayed();
-    }
-
-    public boolean isEmailTextFieldDisplayed(){
-        return emailTestField.isDisplayed();
-    }
-
-    public boolean isSubmitButtonDisplayed(){
-        return submitButton.isDisplayed();
     }
 
     public LinkedinResetPasswordSubmitPage submitUserEmail(String userEmail){

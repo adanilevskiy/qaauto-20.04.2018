@@ -12,7 +12,7 @@ public class LinkedinLoginSubmitPage extends LinkedinBasePage{
     @FindBy(xpath = "//ul[@class='form-fields']//span[@id='session_password-login-error']")
     private WebElement passErrorMessage;
 
-    @FindBy(xpath = "//input[@id='login-email']")
+    @FindBy(xpath = "//ul[@class='form-fields']//span[@id='session_key-login-error']")
     private WebElement emailErrorMessage;
 
 
@@ -20,6 +20,10 @@ public class LinkedinLoginSubmitPage extends LinkedinBasePage{
         super(webDriver);
     }
 
+    /**
+     * Check if current page is loaded.
+     * @return true/false if loaded or not.
+     */
     @Override
     public boolean isPageLoaded() {
         return globalErrorMessage.isDisplayed();

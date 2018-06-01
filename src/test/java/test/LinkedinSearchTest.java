@@ -9,6 +9,9 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Tests for 'Search'.
+ */
 public class LinkedinSearchTest extends LinkedinBaseTest {
 
     @Test
@@ -19,14 +22,14 @@ public class LinkedinSearchTest extends LinkedinBaseTest {
 
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.loginWithValidUserData("smithbod58@gmail.com","Test123Test123");
         sleep(3000);
-        Assert.assertTrue(linkedinHomePage.isPageLoaded(), "Home Page is not loaded");
-
-        Assert.assertTrue(linkedinHomePage.isSearchFieldDisplayed(), "Search field is missing on page");
-
+        Assert.assertTrue(linkedinHomePage.isPageLoaded(),
+                "Home Page is not loaded");
+        Assert.assertTrue(linkedinHomePage.isSearchFieldDisplayed(),
+                "Search field is missing on page");
         LinkedinSearchPage linkedinSearchPage = linkedinHomePage.search(searhTerm);
         sleep(3000);
-        Assert.assertTrue(linkedinSearchPage.isPageLoaded(), "Search Results Page is not loaded");
-
+        Assert.assertTrue(linkedinSearchPage.isPageLoaded(),
+                "Search Results Page is not loaded");
         Assert.assertEquals(linkedinSearchPage.getResultsCount(),
                 10, "Search results count is not 10");
 

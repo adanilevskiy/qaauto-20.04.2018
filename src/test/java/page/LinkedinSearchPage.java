@@ -20,6 +20,10 @@ public class LinkedinSearchPage extends LinkedinBasePage{
         super(webDriver);
     }
 
+    /**
+     * Check if current page is loaded.
+     * @return true/false if loaded or not.
+     */
     @Override
     public boolean isPageLoaded() {
         return searchResultsContainer.isDisplayed();
