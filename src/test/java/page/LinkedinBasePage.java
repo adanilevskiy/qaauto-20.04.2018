@@ -7,14 +7,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
- * Basic class with basic methods for 'Page' classes
+ * Base abstract class contains necessary methods for each subclass
  */
 public abstract class LinkedinBasePage {
     protected WebDriver webDriver;
     protected static GMailService gMailService = new GMailService();
 
     /**
-     *  Get current webDriver constructor
+     * Get current WebDriver for using in each subclass
      * @param webDriver
      */
     public LinkedinBasePage(WebDriver webDriver){
@@ -22,7 +22,7 @@ public abstract class LinkedinBasePage {
     }
 
     /**
-     * Basic 'Get page title' method
+     * Get current page title method
      * @return current page title
      */
     public String getCurrentTitle(){
@@ -37,6 +37,12 @@ public abstract class LinkedinBasePage {
     abstract boolean isPageLoaded();
 
 
+    /**
+     * Wait until web element will be clickable.
+     * @param webElement
+     * @param timeOutInSeconds
+     * @return this webElement
+     */
     public WebElement waitUntilElementIsClickable (WebElement webElement, int timeOutInSeconds){
         WebDriverWait wait = new WebDriverWait(webDriver, timeOutInSeconds);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));

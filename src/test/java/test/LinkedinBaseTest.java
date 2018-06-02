@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import page.LinkedinLoginPage;
 
 /**
- * Class with basic methods for each test class.
+ * Base class contains necessary methods for each subclass
  */
 public class LinkedinBaseTest {
     WebDriver webDriver;

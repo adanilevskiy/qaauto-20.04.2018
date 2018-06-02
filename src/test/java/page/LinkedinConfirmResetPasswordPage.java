@@ -28,10 +28,18 @@ public class LinkedinConfirmResetPasswordPage extends LinkedinBasePage{
         return pageHeader.isDisplayed();
     }
 
+    /**
+     * Check if 'Go To Home page' button is loaded.
+     * @return true/false if loaded or not.
+     */
     public boolean isGoToHomepageButtonDisplayed(){
         return goToHomepageButton.isDisplayed();
     }
 
+    /**
+     * Click on 'Go To Home page' button
+     * @return new LinkedinHomePage page object
+     */
     public LinkedinHomePage clickOnGoToHomepageButton(){
         goToHomepageButton.click();
         return PageFactory.initElements(webDriver, LinkedinHomePage.class);

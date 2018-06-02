@@ -5,6 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+/**
+ * Page object with methods and webElements for Linkedin Reset Password page.
+ */
 public class LinkedinResetPasswordPage extends LinkedinBasePage{
     @FindBy(xpath = "//input[@name='userName']")
     private WebElement emailTestField;
@@ -15,7 +18,10 @@ public class LinkedinResetPasswordPage extends LinkedinBasePage{
     @FindBy(xpath = "//h2[@class='form__subtitle']")
     private WebElement instructionsMessage;
 
-
+    /**
+     * Get current webDriver value.
+     * @param webDriver
+     */
     public LinkedinResetPasswordPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -30,13 +36,15 @@ public class LinkedinResetPasswordPage extends LinkedinBasePage{
         return instructionsMessage.isDisplayed();
     }
 
+    /**
+     * Add user email to text field
+     * Click 'Submit' button
+     * @param userEmail
+     * @return new Reset Password Submit Page
+     */
     public LinkedinResetPasswordSubmitPage submitUserEmail(String userEmail){
         emailTestField.sendKeys(userEmail);
         submitButton.click();
         return PageFactory.initElements(webDriver, LinkedinResetPasswordSubmitPage.class);
-    }
-
-    public String getInstructionsMessage(){
-        return instructionsMessage.getText();
     }
 }

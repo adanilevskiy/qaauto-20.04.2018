@@ -25,7 +25,7 @@ public class LinkedinLoginPage extends LinkedinBasePage{
 
 
     /**
-     * Get current vebDriver constructor.
+     * Get current webDriver value.
      * Initialization webElements for Linkedin Login page.
      * @param webDriver
      */
@@ -77,7 +77,6 @@ public class LinkedinLoginPage extends LinkedinBasePage{
      * Click 'Sign in' button.
      * @param userEmail
      * @param userPassword
-     * @return new Linkedin Login Submit page
      */
     public void loginWithEmptyFields(String userEmail, String userPassword) {
         userEmailField.sendKeys(userEmail);
@@ -87,7 +86,8 @@ public class LinkedinLoginPage extends LinkedinBasePage{
 
     /**
      * Click on 'Forgot Password' link
-     * @return new Linkedin
+     * Connect to user mailbox via Gmail service.
+     * @return new Linkedin Reset Password page.
      */
     public LinkedinResetPasswordPage clickOnForgotPasswordLink(){
         gMailService = new GMailService();
@@ -95,5 +95,4 @@ public class LinkedinLoginPage extends LinkedinBasePage{
         forgotPasswordLink.click();
         return PageFactory.initElements(webDriver, LinkedinResetPasswordPage.class);
     }
-
 }

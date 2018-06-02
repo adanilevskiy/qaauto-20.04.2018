@@ -20,7 +20,7 @@ public class LinkedinHomePage extends LinkedinBasePage{
     private WebElement searchButton;
 
     /**
-     * Get current webDriver constructor.
+     * Get current webDriver value.
      * @param webDriver
      */
     public LinkedinHomePage(WebDriver webDriver){

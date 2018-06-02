@@ -8,6 +8,9 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Page object with methods and webElements for Linkedin Search page.
+ */
 public class LinkedinSearchPage extends LinkedinBasePage{
 
     @FindBy(xpath = "//div[@class='search-results-page core-rail']")
@@ -16,6 +19,10 @@ public class LinkedinSearchPage extends LinkedinBasePage{
     @FindBy(xpath = "//li[contains(@class,'search-result search-result__occluded-item')]")
     private List<WebElement> searchResults;
 
+    /**
+     * Get current webDriver value.
+     * @param webDriver
+     */
     public LinkedinSearchPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -26,13 +33,22 @@ public class LinkedinSearchPage extends LinkedinBasePage{
      */
     @Override
     public boolean isPageLoaded() {
+        waitUntilElementIsClickable(searchResultsContainer,10);
         return searchResultsContainer.isDisplayed();
     }
 
+    /**
+     * Get Results Count on page
+     * @return int Results Count
+     */
     public int getResultsCount(){
         return searchResults.size();
     }
 
+    /**
+     * Get all search results from page then add them to 'Search Results List'
+     * @return List<String> Search result List
+     */
     public List<String> getResultList() {
         List<String> searchResultList = new ArrayList();
         for(WebElement searchResult : searchResults) {
