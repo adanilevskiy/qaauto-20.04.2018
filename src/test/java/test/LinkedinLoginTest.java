@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import page.*;
 
-import static java.lang.Thread.sleep;
 
 /**
  * Tests for Login
@@ -31,7 +30,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
     public Object[][] ValidUserDataProvider(){
         return new Object[][]{
                 {"smithbod58@gmail.com","Test123Test123"},
-          //      {"sMiThBod58@gmail.com","Test123Test123"},
+                {"sMiThBod58@gmail.com","Test123Test123"},
         };
     }
     @Test(dataProvider = "ValidUserDataProvider")
@@ -48,7 +47,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
     public Object[][] incorrectPasswordValues() {
         return new Object[][]{
                 {"smithbod58@gmail.com","Test 1234!"},
-              //  {"smithbod58@gmail.com","Test12345!"}
+                {"smithbod58@gmail.com","Test12345!"}
         };
     }
     @Test (dataProvider = "incorrectPasswordValues")
@@ -71,7 +70,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
     public Object[][] emptyLoginOrPasswordFieldProvider() {
         return new Object[][]{
                 {"","Test123"},
-         //       {"smithbod58@gmail.com",""}
+                {"smithbod58@gmail.com",""}
         };
     }
     @Test (dataProvider = "emptyLoginOrPasswordFieldProvider")

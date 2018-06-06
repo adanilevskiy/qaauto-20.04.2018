@@ -7,7 +7,6 @@ import page.LinkedinSearchPage;
 
 import java.util.List;
 
-import static java.lang.Thread.sleep;
 
 /**
  * Tests for 'Search'.

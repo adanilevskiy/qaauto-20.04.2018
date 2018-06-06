@@ -8,18 +8,18 @@
 *More instructions could be found here:*
 http://www.java.com/en/download/help/download_options.xml
 
-**2. We need JRE and JDK to be installed.**
+**2. We need JDK to be installed.**
 
-*It can be downloaded here:*
-http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+*JRE v10.0.1 can be downloaded here:*
+http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html
 
-You need to accept license and download jdk-7uXX-your_OS file and install it. 
+You need to accept license and download jdk file according to your system and install it. 
 Be sure you have selected correct arch version (ex. x64 for windows).
 
 
 **3. Since java is installed on your machine, you need to add and modify some system and user variables.**
 
-- Create JAVA_HOME variable C:\Program Files\Java\jdk1.7.0_67 for example - if you use windows.
+- Create JAVA_HOME variable C:\Program Files\Java\jdk-10.0.1 for example - if you use windows.
 
 - For other systems (Mac): http://www.mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
 

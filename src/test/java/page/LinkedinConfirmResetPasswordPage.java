@@ -5,6 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+
+/**
+ * Page object with methods and webElements for Linkedin Confirm reset password page.
+ */
 public class LinkedinConfirmResetPasswordPage extends LinkedinBasePage{
 
     @FindBy(xpath = "//header[@class='content__header']")

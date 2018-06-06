@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
- * Page object with methods and webElements for Linkedin Login page.
+ * Page object class with methods and webElements for Linkedin Login page.
  */
 public class LinkedinLoginPage extends LinkedinBasePage{
 
