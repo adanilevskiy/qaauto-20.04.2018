@@ -23,6 +23,8 @@ public class LinkedinLoginPage extends LinkedinBasePage{
     @FindBy(xpath = "//a[@class='link-forgot-password']")
     private WebElement forgotPasswordLink;
 
+    @FindBy(xpath = "//img[@class='lazy-loaded']")
+    private WebElement logo;
 
     /**
      * Get current webDriver value.
@@ -40,8 +42,8 @@ public class LinkedinLoginPage extends LinkedinBasePage{
      */
     @Override
     public boolean isPageLoaded() {
-        waitUntilElementIsClickable(signInButton, 10);
-        return signInButton.isDisplayed();
+        waitUntilElementIsClickable(logo, 10);
+        return logo.isDisplayed();
     }
 
     /**
